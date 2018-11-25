@@ -1,10 +1,11 @@
 <?php
 
 function connect(){
-    $servername = "localhost";
-    $username = "Fradent";
-    $password = "Shannara1";
-    $db = "Fradent";
+    $xml=simplexml_load_file("include/config.xml") or die("Error: Cannot create object");
+    $servername=$xml->servername;
+    $username=$xml->username;
+    $password=$xml->password;
+    $db = $xml ->dbname;
     $result;
     // Create connection
     $conn = new mysqli($servername, $username, $password, $db);
