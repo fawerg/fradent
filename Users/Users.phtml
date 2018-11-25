@@ -1,0 +1,105 @@
+<?php
+require_once '../include/db_functions.php';
+require_once '../include/helper_functions.php';
+ini_set('display_startup_errors', 1);
+ini_set('display_errors', 1);
+session_start();
+if(isset($_POST['submit-logout'])){
+    session_destroy();
+    redirect("../index.phtml");
+}
+if(!$_SESSION['isLogged']){
+    redirect("../index.phtml");
+}
+
+$result = getUserList();
+?>
+<html>
+    <title>Fradent</title>
+    <head>
+        <script src="../js/jquery-3.3.1.js"></script>
+        <script src="../js/jquery.dataTables.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <link rel="stylesheet" type="text/css" href="../styles/style.css">
+        <link rel="stylesheet" type="text/css" href="../css/bootstrap-grid.css">
+        <link rel="stylesheet" type="text/css" href="../css/bootstrap-reboot.min.css">
+        <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../css/jquery.dataTables.min.css">
+        <link rel="stylesheet" type="text/css" href="../css/responsive.dataTables.min.css">
+        <script src="../js/bootstrap.bundle.min.js"></script>
+
+    </head>
+    <body>
+        <header class="bg-dark text-white">
+            <div class="container ">
+                <div class="page-header container">
+                    <div class="row">
+                        <div class="col-4">
+                           <h1 class="title">Fradent</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div id="main">
+            <nav class="nav flex-column bg-light">
+                <a class="nav-link active" href="../Users/Users.phtml">Users</a>
+                <a class="nav-link" href="#">Link</a>
+                <a class="nav-link" href="#">Link</a>
+                <form method="post">
+                    <button class="btn btn-light text-primary" name="submit-logout">
+                        Logout
+                    </button>
+                </form>
+                
+            </nav>
+            <article>
+                <table id="users" class="display nowrap" >
+                    <thead>
+                        <th>
+                            ID
+                        </th>
+                        <th>
+                            Nome
+                        </th>
+                        <th>
+                            Cognome
+                        </th>
+                        <th>
+                            Password
+                        </th>
+                        <th>
+                            Username
+                        </th>
+                    </thead>
+                    <tbody>
+                        <?php
+                            if (isset($result)) {
+                                foreach ($result as $line) {
+                                    echo "<tr>";
+                                    foreach ($line as $col) {
+                                        echo "<td>$col</td>";
+                                    }
+                                    echo "</tr>";
+                                }
+                            }
+                        ?>
+                    </tbody>
+                </table>
+            </article>
+            <aside class="bg-light"></aside>
+        </div>
+        <footer class="bg-dark text-white page-footer">
+            <div class="container">
+                <div class="footer-copyright text-center py-3">© 2018 Copyright:
+                    <p>Powered By Franci</p>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>
+<script>
+    $(document).ready(function() {
+        $('#users').DataTable();
+    } );
+</script>

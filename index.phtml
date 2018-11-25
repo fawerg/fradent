@@ -1,0 +1,86 @@
+<?php
+ini_set('display_startup_errors', 1);
+ini_set('display_errors', 1);
+session_start();
+require_once 'include/db_functions.php';
+require_once 'include/helper_functions.php';
+
+if(isset($_SESSION['isLogged']) && $_SESSION['isLogged']==true){
+    redirect('Users/Users.phtml');
+}
+if(isset($_POST['submit-login'])){
+    if($_POST['username-login']=='' ||$_POST['password-login']==''){
+        $error_msg="Hai lasciato un campo vuoto";
+    }
+    else{
+        if(login(strtoupper($_POST['username-login']),$_POST['password-login'])){
+            redirect("Users/Users.phtml");
+        }
+    }
+}
+?>
+<html>
+    <title>Fradent</title>
+    <head>
+        <script src="js/jquery-3.3.1.js"></script>
+        <script src="js/jquery.dataTables.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <link rel="stylesheet" type="text/css" href="styles/style.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-grid.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-reboot.min.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/jquery.dataTables.min.css">
+        <link rel="stylesheet" type="text/css" href="css/responsive.dataTables.min.css">
+        <script src="js/bootstrap.bundle.min.js"></script>
+    </head>
+    <body>
+        <header class="bg-dark text-white">
+            <div class="container ">
+                <div class="page-header">
+                    <h1 class="title">Fradent</h1>
+                </div>
+            </div>
+        </header>
+        <div id="main">
+            <aside class="bg-light"></aside>
+            <article>
+                <div class="container form-login">
+                    <form method="post" >
+                        <div class="form-group row align-items-center">
+                            <label for="username-login" class="col-1 col-form-label offset-3">Username</label>
+                            <div class="col-3">
+                                <input class="form-control" type="text"  id="username-login" name="username-login">
+                            </div>
+                        </div>
+                        <div class="form-group row align-items-center">
+                            <label for="password-login" class="col-1 col-form-label offset-3">Password</label>
+                            <div class="col-3">
+                                <input class="form-control" type="password"  id="password-login" name="password-login">
+                            </div>
+                        </div>
+                        <?php if(isset($error_msg)):?>
+                            <div class="form-group row align-items-center text-danger">
+                                <div class="col-4 offset-3">
+                                    <?=$error_msg?>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                        <div class="form-group row align-items-center">
+                            <div class="col-3 offset-4">
+                                <input class="form-control btn-primary" type="submit"  id="submit-login" value="Login" name="submit-login">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </article>
+            <aside class="bg-light"></aside>
+        </div>
+        <footer class="bg-dark text-white page-footer">
+            <div class="container">
+                <div class="footer-copyright text-center py-3">© 2018 Copyright:
+                    <p>Powered By Franci</p>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>
